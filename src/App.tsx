@@ -1,8 +1,7 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-
+import SignIn from "./pages/Auth/SignIn";
+import SignUp from "./pages/Auth/SignUp";
 import { initializeApp } from "firebase/app";
+import { Route, Routes } from "react-router-dom";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC8VCLKJ6zDh3zVzK-UJuOPrnbLWMXrUgw",
@@ -21,7 +20,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 function App() {
-  return <div>Meche :)</div>;
+  return (
+    <Routes>
+      <Route path="/" element={<SignIn />} />
+      <Route path="Sign-Up" element={<SignUp />} />
+    </Routes>
+  );
 }
 
 export default App;
