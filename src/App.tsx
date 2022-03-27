@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC8VCLKJ6zDh3zVzK-UJuOPrnbLWMXrUgw",
+
+  authDomain: "licenta-30277.firebaseapp.com",
+
+  projectId: "licenta-30277",
+
+  storageBucket: "licenta-30277.appspot.com",
+
+  messagingSenderId: "674750166386",
+
+  appId: "1:674750166386:web:96d6a033328c3cdacf19eb",
+};
+
+const app = initializeApp(firebaseConfig);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <div>Meche :)</div>;
 }
 
 export default App;
