@@ -90,7 +90,7 @@ const SignUp = () => {
           <Grid container>
             <Grid item xs>
               <Link to="/Forgot-Password">
-                Forgot password?
+                Forgot password? 
               </Link>
             </Grid>
             <Grid item>

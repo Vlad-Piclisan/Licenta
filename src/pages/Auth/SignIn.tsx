@@ -1,5 +1,5 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -33,7 +34,8 @@ const SignIn = () => {
         payload.email,
         payload.password
       );
-      alert("Bine " + userCredential.user.email);
+      navigate("/Main");
+      // alert("Bine " + userCredential.user.email);
     } catch (error: any) {
       alert("Probelmius" + error.message);
     }
@@ -88,14 +90,10 @@ const SignIn = () => {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link to="/Forgot-Password">
-                Forgot password?
-              </Link>
+              <Link to="/Forgot-Password">Forgot password?</Link>
             </Grid>
             <Grid item>
-              <Link to="Sign-Up">
-                {"Don't have an account? Sign Up"}
-              </Link>
+              <Link to="Sign-Up">{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
         </Box>

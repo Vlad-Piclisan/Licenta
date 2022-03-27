@@ -1,30 +1,60 @@
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
-import { initializeApp } from "firebase/app";
 import { Route, Routes } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged, User, signOut } from "firebase/auth";
+import { Button } from "@mui/material";
+import { AuthContext, AuthGuard, useAuth } from "./hooks/useAuth";
+import Main from "./pages/main/main";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC8VCLKJ6zDh3zVzK-UJuOPrnbLWMXrUgw",
-
-  authDomain: "licenta-30277.firebaseapp.com",
-
-  projectId: "licenta-30277",
-
-  storageBucket: "licenta-30277.appspot.com",
-
-  messagingSenderId: "674750166386",
-
-  appId: "1:674750166386:web:96d6a033328c3cdacf19eb",
-};
-
-const app = initializeApp(firebaseConfig);
+function NotFound(){
+  return <div>
+    <p>
+      404 Not found
+    </p>
+  </div>
+}
 
 function App() {
+  const { user } = useContext(AuthContext);
+
+  if (user === undefined) {
+    return <>"Loading ..."</>;
+  }
   return (
-    <Routes>
-      <Route path="/" element={<SignIn />} />
-      <Route path="Sign-Up" element={<SignUp />} />
-    </Routes>
+    <div>
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="Sign-Up" element={<SignUp />} />
+        <Route
+          path="Main"
+          element={
+            <AuthGuard>
+              <Main />
+            </AuthGuard>
+          }
+        />
+        <Route path="*" element={<NotFound />}/>
+      </Routes>
+      <div>
+        {user && (
+          <div>
+            <p>
+              User is signed in with email {user.email}
+              <Button
+                variant="contained"
+                onClick={() => {
+                  const auth = getAuth();
+                  signOut(auth);
+                }}
+              >
+                Sign Out
+              </Button>
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
