@@ -1,6 +1,7 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -8,38 +9,86 @@ import {
   CssBaseline,
   FormControlLabel,
   Grid,
-
   TextField,
   Typography,
 } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { doc, setDoc, getFirestore } from "firebase/firestore";
+import { saveUserToDatabase } from "../../services/users";
+import { SignUpPayload } from "../../models/Users";
 
 const SignUp = () => {
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const payload = {
-      email: data.get("email") as string,
-      password: data.get("password") as string,
-    };
+  const navigate = useNavigate();
 
-    if (!payload.email && !payload.password) {
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<SignUpPayload>();
 
+  const [error, setError] = useState<string | null>(null);
+
+  async function onSubmit(payload: SignUpPayload) {
     const auth = getAuth();
-
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         payload.email,
         payload.password
       );
-      alert("Bine "+userCredential.user.email)
-    } catch (error:any) {
-        alert("Probelmius"+error.message)
+      console.log(userCredential);
+      await saveUserToDatabase(userCredential.user.uid,payload);
+      navigate("/");
+      alert("Bine " + userCredential.user.email);
+    } catch (error: any) {
+      console.log({ error });
+      let errorMessage = "";
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          errorMessage = "Email already in use";
+          break;
+      }
+      setError(errorMessage ?? error.message);
     }
-  };
+  }
+  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
 
+  //   const payload = {
+  //     email: data.get("email") as string,
+  //     confirmEmail: data.get("confirm-email") as string,
+  //     password: data.get("password") as string,
+  //     confirmPassword: data.get("confirm-password") as string,
+  //   };
+  //   console.log(payload.password)
+  //   console.log(payload.confirmPassword);
+  //   console.log(payload.confirmEmail);
+  //   if (!payload.email || !payload.password) {
+  //     return;
+  //   }
+
+  //   if(payload.confirmEmail!=payload.email || payload.confirmPassword!=payload.password ){
+  //     return;
+  //   }
+
+  //   const auth = getAuth();
+
+  //   try {
+  //     const userCredential = await createUserWithEmailAndPassword(
+  //       auth,
+  //       payload.email,
+  //       payload.password
+  //     );
+  //     navigate("/");
+  //     alert("Bine " + userCredential.user.email);
+  //   } catch (error: any) {
+  //     alert("Probelmius" + error.message);
+  //   }
+  // };
+  //todo: dupa ce merge signup-ul trimit pe pag princ +errors
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -54,14 +103,55 @@ const SignUp = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
+        <Box
+          component="form"
+          noValidate
+          sx={{ mt: 1 }}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <Grid container spacing={2}>
+            <Grid item md={6} sm={12}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                label="First Name"
+                {...register("firstName", {
+                  required: "First name is required",
+                })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+              />
+            </Grid>
+            <Grid item md={6} sm={12}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                label="Last Name"
+                {...register("lastName", {
+                  required: "Email is required",
+                })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+              />
+            </Grid>
+          </Grid>
+
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
             label="Email Address"
-            name="email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Invalid email address",
+              },
+            })}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             autoComplete="email"
             autoFocus
           />
@@ -69,34 +159,61 @@ const SignUp = () => {
             margin="normal"
             required
             fullWidth
-            name="password"
+            {...register("confirmEmail", {
+              required: "Required",
+              validate: (email) => email === watch("email"),
+            })}
+            error={!!errors.confirmEmail}
+            helperText={errors.confirmEmail?.message}
+            label="Confirm Email Address"
+            autoComplete="confirm-email"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            {...register("password", {
+              required: "Password is required",
+            })}
             label="Password"
             type="password"
-            id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            {...register("confirmPassword", {
+              required: "Required",
+              validate: (password) => password === watch("password"),
+            })}
+            label="Confirm Password"
+            type="password"
+            autoComplete="confirm-password"
           />
+
+          {error && (
+            <Alert sx={{ my: 2 }} severity="error">
+              {error}
+            </Alert>
+          )}
+
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Sign Up
           </Button>
+
           <Grid container>
             <Grid item xs>
-              <Link to="/Forgot-Password">
-                Forgot password? 
-              </Link>
+              <Link to="/Forgot-Password">Forgot password?</Link>
             </Grid>
             <Grid item>
-              <Link to="/" >
-                {"Already have an account? Sign In"}
-              </Link>
+              <Link to="/Sign-In">{"Already have an account? Sign In"}</Link>
             </Grid>
           </Grid>
         </Box>

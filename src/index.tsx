@@ -3,7 +3,10 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { initializeApp } from "firebase/app";
+import "./index.css";
 import { AuthContextProvider } from "./hooks/useAuth";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "./theme";
 const firebaseConfig = {
   apiKey: "AIzaSyC8VCLKJ6zDh3zVzK-UJuOPrnbLWMXrUgw",
   authDomain: "licenta-30277.firebaseapp.com",
@@ -17,9 +20,11 @@ const app = initializeApp(firebaseConfig);
 
 ReactDOM.render(
   <BrowserRouter>
+  <ThemeProvider theme={theme}>
     <AuthContextProvider>
       <App />
     </AuthContextProvider>
+  </ThemeProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

@@ -93,7 +93,7 @@ const SignIn = () => {
               <Link to="/Forgot-Password">Forgot password?</Link>
             </Grid>
             <Grid item>
-              <Link to="Sign-Up">{"Don't have an account? Sign Up"}</Link>
+              <Link to="/Sign-Up">{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
         </Box>
