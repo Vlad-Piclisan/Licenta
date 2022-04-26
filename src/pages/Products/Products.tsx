@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardMedia,
   Dialog,
   DialogActions,
   DialogContent,
@@ -21,7 +22,8 @@ import {
   listenForCategories,
 } from "../../services/category";
 import { createFileURL } from "../../services/FileService";
-import { saveProduct } from "../../services/products";
+import { listenForProducts, saveProduct } from "../../services/products";
+import ProductCard from "./ProductCard";
 
 interface CategoryPayload {
   name: string;
@@ -268,10 +270,21 @@ const Products = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  // [1,2,3,4,5]
   const handleClose = () => {
     setOpen(false);
   };
+
+
+
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const unsubscribe = listenForProducts(setProducts);
+    return unsubscribe;
+
+
+  },[]);
   return (
     <Box>
       <Dialog
@@ -307,6 +320,7 @@ const Products = () => {
           Open Form
         </Button>
       </Box>
+        {products.map(product => <ProductCard product={product} />)}
     </Box>
   );
 };

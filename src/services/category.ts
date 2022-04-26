@@ -1,5 +1,6 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, query, setDoc,onSnapshot } from "firebase/firestore";
 import { SignUpPayload, UserInfo } from "../models/Users";
+import { createListenerForCollection } from "./utils";
 
 export async function saveCategory(categoryName:string){
     const db = getFirestore();
@@ -13,17 +14,7 @@ export async function saveCategory(categoryName:string){
     })
 }
 
-export function listenForCategories(cb:(categories?:any) => void){
-    
-    const db = getFirestore();
-    const q = query(collection(db,"categories"))
-    const meche =collection(db,"categories");
-    
-    return onSnapshot(q, querySnapshot => {
-        const categories = querySnapshot.docs.map(doc => doc.data())
-        cb(categories);
-    })
-}
+export const listenForCategories = createListenerForCollection("categories");
 
 export async function getAllCategories(){
     const db = getFirestore();
