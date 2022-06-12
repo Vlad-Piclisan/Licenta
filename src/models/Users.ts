@@ -1,3 +1,5 @@
+import { CartProduct } from "../hooks/useCart";
+
 export interface SignUpPayload  extends UserInfo{
     password: string;
     confirmEmail: string;
@@ -7,5 +9,5 @@ export interface UserInfo {
     firstName: string;
     lastName: string;
     email: string;
-
+    cart?: CartProduct[]
   }

@@ -7,6 +7,7 @@ import "./index.css";
 import { AuthContextProvider } from "./hooks/useAuth";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
+import { CartContextProvider } from "./hooks/useCart";
 const firebaseConfig = {
   apiKey: "AIzaSyC8VCLKJ6zDh3zVzK-UJuOPrnbLWMXrUgw",
   authDomain: "licenta-30277.firebaseapp.com",
@@ -22,7 +23,9 @@ ReactDOM.render(
   <BrowserRouter>
   <ThemeProvider theme={theme}>
     <AuthContextProvider>
-      <App />
+      <CartContextProvider>
+        <App />
+      </CartContextProvider>
     </AuthContextProvider>
   </ThemeProvider>
   </BrowserRouter>,

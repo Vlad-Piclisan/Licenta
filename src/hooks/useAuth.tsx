@@ -1,4 +1,5 @@
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { createContext, useEffect, useState, FC, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { SignUpPayload, UserInfo } from "../models/Users";
@@ -18,6 +19,19 @@ export const useAuth = () => {
     });
     return unsub;
   }, []);
+
+  useEffect(() => {
+    let cb:() => void = () => {};
+    if(user){
+      const db = getFirestore();
+      cb = onSnapshot(doc(db, 'users',user.uid), querySnapshot => {
+          const data = querySnapshot.data() as UserInfo;
+          setUserInfo(data);
+      })
+    }
+    return cb;
+  },[user]);
+
   return { user,userInfo };
 };
 

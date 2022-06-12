@@ -9,12 +9,15 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  Grid,
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { AddToCartButton } from "../../components/AddToCartButton";
+import { CartContext } from "../../hooks/useCart";
 import {
   getAllCategories,
   saveCategory,
@@ -114,6 +117,7 @@ export interface Product {
   description: string;
   photoURL: string;
   category: string;
+  id: string;
 }
 
 export interface ProductPayload extends Product {
@@ -270,21 +274,32 @@ const Products = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  // [1,2,3,4,5]
+  const { cart, addToCart,deleteFromCart } = useContext(CartContext);
+  console.log({ cart });
   const handleClose = () => {
     setOpen(false);
   };
 
+  const [openProduct, setOpenProduct] = React.useState(false);
 
+  const handleClickOpenProduct = () => {
+    setOpenProduct(true);
+  };
+
+  const handleCloseProduct = () => {
+    setSelectedProduct(null);
+    setOpenProduct(false);
+  };
 
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const unsubscribe = listenForProducts(setProducts);
     return unsubscribe;
+  }, []);
 
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  },[]);
   return (
     <Box>
       <Dialog
@@ -298,6 +313,71 @@ const Products = () => {
 
         <DialogActions>
           <Button variant="contained" onClick={handleClose}>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        fullWidth={true}
+        maxWidth={"md"}
+        open={openProduct}
+        onClose={handleCloseProduct}
+      >
+        {selectedProduct && (
+          <Box style={{ display: "flex", flexDirection: "column" }}>
+            <Box>
+              <Typography
+                my={3.5}
+                style={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: "1.5rem",
+                }}
+              >
+                {selectedProduct.name}
+              </Typography>
+            </Box>
+            <Box style={{ display: "flex" }}>
+              <img
+                src={selectedProduct.photoURL}
+                style={{ height: "50vh", width: "70%", objectFit: "contain" }}
+              />
+              <Box
+                px={4}
+                sx={{ width: "30%", display: "flex", flexDirection: "column" }}
+              >
+                <Typography sx={{ flex: 1 }}>
+                  {selectedProduct.description}
+                </Typography>
+                <Box
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Typography>€{selectedProduct.price}</Typography>
+                  <AddToCartButton
+                    variant="contained"
+                    onClick={() => {
+                      addToCart(selectedProduct);
+                    }}
+                  />
+                  <Button onClick={() => {
+                    deleteFromCart(selectedProduct);
+                  }}>
+                    Remove from cart
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+            {/* <ProductCard product={selectedProduct} /> */}
+          </Box>
+        )}
+
+        <DialogActions>
+          <Button variant="contained" onClick={handleCloseProduct}>
             Close
           </Button>
         </DialogActions>
@@ -320,7 +400,22 @@ const Products = () => {
           Open Form
         </Button>
       </Box>
-        {products.map(product => <ProductCard product={product} />)}
+      <Box px={16}>
+        <Grid container spacing={6}>
+          {products.map((product) => (
+            <Grid item xs={3} key={product.id}>
+              <ProductCard
+                product={product}
+                onProductClicked={() => {
+                  setSelectedProduct(product);
+                  handleClickOpenProduct();
+                  console.log(product.name);
+                }}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </Box>
   );
 };

@@ -12,14 +12,17 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { AuthContext } from "../hooks/useAuth";
-import { Link,  useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
+import { CartContext } from "../hooks/useCart";
+import { Badge } from "@mui/material";
 
 const pages = ["Products", "Configurator"];
 const settings = ["Cart", "Account", "Logout"];
 
 const NavBar = () => {
   const { user, userInfo } = React.useContext(AuthContext);
+  const { cart, addToCart } = React.useContext(CartContext);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -38,11 +41,11 @@ const NavBar = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = (setting:string) => {
+  const handleCloseUserMenu = (setting: string) => {
     setAnchorElUser(null);
     const auth = getAuth();
-    switch(setting){
-      case 'Logout':
+    switch (setting) {
+      case "Logout":
         signOut(auth);
         break;
       default:
@@ -68,7 +71,9 @@ const NavBar = () => {
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
           >
-            <Link to="/" style={{textDecoration:"none",color:"inherit"}}>MECHE BIKES</Link>
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+              MECHE BIKES
+            </Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -130,7 +135,12 @@ const NavBar = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Badge badgeContent={cart.length} color="secondary">
+                    <Avatar
+                      alt={`${userInfo?.firstName} ${userInfo?.lastName}`}
+                      src="/static/images/avatar/2.jpg"
+                    />
+                  </Badge>
                 </IconButton>
               </Tooltip>
               <Menu
@@ -150,14 +160,28 @@ const NavBar = () => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
-                    <Typography textAlign="center">{setting}</Typography>
+                  <MenuItem
+                    key={setting}
+                    onClick={() => handleCloseUserMenu(setting)}
+                  >
+                    {setting === "Cart" ? (
+                      <Box display="flex" >
+                        <Typography mr={0.5}>
+                          Cart
+                        </Typography>
+                        <Typography  sx={{bgcolor:"secondary.main",borderRadius:"50%", color:"white", padding:"0px 7px" }} >
+                          {cart.length}
+                        </Typography>  
+                      </Box>
+                    ) : (
+                      <Typography textAlign="center">{setting}</Typography>
+                    )}
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
           ) : (
-            <Box sx={{ flexGrow: 0, display: "flex",gap: 2 }}>
+            <Box sx={{ flexGrow: 0, display: "flex", gap: 2 }}>
               <Button
                 color="secondary"
                 onClick={signInHandler}

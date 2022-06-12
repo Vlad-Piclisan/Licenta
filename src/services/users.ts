@@ -17,3 +17,9 @@ export async function getUserByUid(uid: string): Promise<UserInfo | null> {
   }
   return null;
 }
+
+export async function updateUser(uid:string,payload:any){
+  const db = getFirestore();
+  return setDoc(doc(db, `users/${uid}`), payload, { merge:true });
+}
+

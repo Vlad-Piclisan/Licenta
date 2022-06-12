@@ -11,7 +11,7 @@ import { AuthGuard } from "./components/Guards/AuthGuard";
 import ApplicationLayout from "./pages/ApplicationLayout";
 import Products from "./pages/Products/Products";
 import Configurator from "./pages/Configurator/Configurator";
-
+import Cart from "./components/Cart";
 
 function NotFound() {
   return (
@@ -25,7 +25,18 @@ function App() {
   const { user, userInfo } = useContext(AuthContext);
 
   if (user === undefined) {
-    return <Box sx={{display:"flex",justifyContent:"center",alignItems:"center",height:"100%"}}><CircularProgress color="primary" /></Box>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        <CircularProgress color="primary" />
+      </Box>
+    );
   }
   return (
     <Routes>
@@ -52,6 +63,14 @@ function App() {
         element={
           <ApplicationLayout>
             <Configurator />
+          </ApplicationLayout>
+        }
+      />
+      <Route
+        path="Cart"
+        element={
+          <ApplicationLayout>
+            <Cart />
           </ApplicationLayout>
         }
       />

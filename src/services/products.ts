@@ -7,7 +7,10 @@ export async function saveProduct(productPayload: Product){
 
     const docRef = doc(collection(db, "products"));
     
-    return setDoc(docRef, productPayload)
+    return setDoc(docRef, {
+        ...productPayload,
+        id:docRef.id
+    })
 }
 
 export const listenForProducts = createListenerForCollection<Product>("products");
