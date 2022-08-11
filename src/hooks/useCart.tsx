@@ -19,7 +19,7 @@ export function useCart(){
         }
         return []
     });
-    const {user,userInfo} = React.useContext(AuthContext);
+    const {user, userInfo} = React.useContext(AuthContext);
     function emptyCart(){
         setCart([]);
     }
@@ -33,23 +33,25 @@ export function useCart(){
             setCart([...cart,{...product, count:1}])
         }
     }
-    React.useEffect(() => {
-        (async () => {
-            console.log("setting cart");
-            if(userInfo){
-                const userCart = userInfo.cart;
-                if(userCart){
-                    setCart(userCart);
-                }else {
-                    setCart([]);
-                }
-            }
-        })()
-    },[userInfo]);
+    // React.useEffect(() => {
+    //     (async () => {
+    //         console.log("setting cart");
+    //         if(userInfo){
+    //             const userCart = userInfo.cart;
+    //             if(userCart){
+    //                 setCart(userCart);
+    //             }else {
+    //                 setCart([]);
+    //             }
+    //         }
+    //     })()
+    // },[userInfo]);
     React.useEffect(() => {
         localStorage.setItem(localStorageCartKey, JSON.stringify(cart));
         if (user) {
+            console.log("Updating");
             updateUser(user.uid, {cart});
+
         }
     },[cart]);
     function remove(product: Product) {

@@ -37,8 +37,18 @@ const NavBar = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (menu: string) => {
     setAnchorElNav(null);
+    switch (menu) {
+      case "Products":
+        navigateToProducts();
+        break;
+      case "Configurator":
+        navigateToConfig();
+        break;
+      default:
+        break;
+    }
   };
 
   const handleCloseUserMenu = (setting: string) => {
@@ -47,6 +57,12 @@ const NavBar = () => {
     switch (setting) {
       case "Logout":
         signOut(auth);
+        break;
+      case "Cart":
+        navigate("/Cart");
+        break;
+      case "Account":
+        navigate("/Account");
         break;
       default:
         break;
@@ -60,6 +76,13 @@ const NavBar = () => {
   const signInHandler = () => {
     navigate("/Sign-In");
   };
+  const navigateToProducts = () => {
+    navigate("/Products");
+  };
+  const navigateToConfig = () => {
+    navigate("/Configurator");
+  }
+
 
   return (
     <AppBar position="static">
@@ -106,7 +129,7 @@ const NavBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -124,7 +147,7 @@ const NavBar = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handleCloseNavMenu(page)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
@@ -169,9 +192,9 @@ const NavBar = () => {
                         <Typography mr={0.5}>
                           Cart
                         </Typography>
-                        <Typography  sx={{bgcolor:"secondary.main",borderRadius:"50%", color:"white", padding:"0px 7px" }} >
+                        <Typography sx={{ bgcolor: "secondary.main", borderRadius: "50%", color: "white", padding: "0px 7px" }} >
                           {cart.length}
-                        </Typography>  
+                        </Typography>
                       </Box>
                     ) : (
                       <Typography textAlign="center">{setting}</Typography>

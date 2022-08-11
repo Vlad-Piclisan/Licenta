@@ -1,24 +1,24 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 
-const ApplicationLayout:React.FC = ({children}) => {
+const ApplicationLayout: React.FC = ({ children }) => {
     return <Box sx={{
-        height:"100%",
-        display:"flex",
-        flexDirection:"column"
+        height: "100%",
+        display: "flex",
+        flexDirection: "column"
     }}>
         <nav>
-            <NavBar/>
+            <NavBar />
         </nav>
         <main style={{
-            flex:1,
-            backgroundImage:`url(${process.env.PUBLIC_URL}/assets/unknown.png)`,
-            backgroundRepeat:"round",
-            backgroundSize:"cover",
+            flex: 1,
+            backgroundImage: `url(${process.env.PUBLIC_URL}/assets/background1.jpg)`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover"
         }}>
             {children}
         </main>
-    </Box>
+    </Box >
 }
 export default ApplicationLayout

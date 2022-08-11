@@ -4,4 +4,16 @@ import {typography} from "./typography";
 export const theme = createTheme({
     palette,
     typography,
+    // components:{
+    //     MuiTextField:{
+    //         defaultProps:{
+    //             InputProps:{
+    //                 style:{
+    //                     color:"white",
+    //                     borderColor:"white"
+    //                 }
+    //             }
+    //         },
+    //     }
+    // }
 });

@@ -10,4 +10,5 @@ export interface UserInfo {
     lastName: string;
     email: string;
     cart?: CartProduct[]
+    address?: string;
   }

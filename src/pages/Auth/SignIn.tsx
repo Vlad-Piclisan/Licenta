@@ -11,6 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import BackArrow from "../../components/BackArrow";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const SignIn = () => {
         payload.email,
         payload.password
       );
-      navigate("/Main");
+      navigate("/");
       // alert("Bine " + userCredential.user.email);
     } catch (error: any) {
       alert("Probelmius" + error.message);
@@ -52,10 +53,12 @@ const SignIn = () => {
           alignItems: "center",
         }}
       >
+      
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
         <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
+        <BackArrow />
           <TextField
             margin="normal"
             required

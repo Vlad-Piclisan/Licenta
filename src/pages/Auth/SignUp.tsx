@@ -1,5 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
+
 import {
   Alert,
   Box,
@@ -17,6 +18,7 @@ import { useState } from "react";
 import { doc, setDoc, getFirestore } from "firebase/firestore";
 import { saveUserToDatabase } from "../../services/users";
 import { SignUpPayload } from "../../models/Users";
+import BackArrow from "../../components/BackArrow";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -31,6 +33,7 @@ const SignUp = () => {
   const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(payload: SignUpPayload) {
+    setError(null);
     const auth = getAuth();
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -39,7 +42,7 @@ const SignUp = () => {
         payload.password
       );
       console.log(userCredential);
-      await saveUserToDatabase(userCredential.user.uid,payload);
+      await saveUserToDatabase(userCredential.user.uid, payload);
       navigate("/");
       alert("Bine " + userCredential.user.email);
     } catch (error: any) {
@@ -90,9 +93,12 @@ const SignUp = () => {
   // };
   //todo: dupa ce merge signup-ul trimit pe pag princ +errors
   return (
+
     <Container component="main" maxWidth="xs">
+     <BackArrow/>
       <CssBaseline />
       <Box
+      
         sx={{
           marginTop: 8,
           display: "flex",
@@ -100,6 +106,7 @@ const SignUp = () => {
           alignItems: "center",
         }}
       >
+        
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
@@ -119,8 +126,8 @@ const SignUp = () => {
                 {...register("firstName", {
                   required: "First name is required",
                 })}
-                error={!!errors.email}
-                helperText={errors.email?.message}
+                error={!!errors.firstName}
+                helperText={errors.firstName?.message}
               />
             </Grid>
             <Grid item md={6} sm={12}>
@@ -130,10 +137,10 @@ const SignUp = () => {
                 fullWidth
                 label="Last Name"
                 {...register("lastName", {
-                  required: "Email is required",
+                  required: "Last name is required",
                 })}
-                error={!!errors.email}
-                helperText={errors.email?.message}
+                error={!!errors.lastName}
+                helperText={errors.lastName?.message}
               />
             </Grid>
           </Grid>
@@ -160,8 +167,8 @@ const SignUp = () => {
             required
             fullWidth
             {...register("confirmEmail", {
-              required: "Required",
-              validate: (email) => email === watch("email"),
+              required: "Email confirmation is required ",
+              validate: (email) => email === watch("email"), //if not "Email is not matching"
             })}
             error={!!errors.confirmEmail}
             helperText={errors.confirmEmail?.message}
@@ -179,20 +186,23 @@ const SignUp = () => {
             label="Password"
             type="password"
             autoComplete="current-password"
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
           <TextField
             margin="normal"
             required
             fullWidth
             {...register("confirmPassword", {
-              required: "Required",
-              validate: (password) => password === watch("password"),
+              required: "Confirming your password is required",
+              validate: (password) => password === watch("password"), //if not "Password is not matching"
             })}
             label="Confirm Password"
             type="password"
             autoComplete="confirm-password"
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
           />
-
           {error && (
             <Alert sx={{ my: 2 }} severity="error">
               {error}
@@ -218,6 +228,11 @@ const SignUp = () => {
           </Grid>
         </Box>
       </Box>
+      
+
+
+
+
     </Container>
   );
 };

@@ -16,7 +16,7 @@ export const CustomCardContent = styled(CardContent)(({ theme }) => ({
 }));
 
 function CartProductDisplay({ product }: { product: CartProduct }) {
-  const { cart, deleteFromCart, remove, addToCart} = useContext(CartContext);
+  const { cart, deleteFromCart, remove, addToCart } = useContext(CartContext);
   return (
     <div style={{ width: "100%", cursor: "pointer", userSelect: "none" }}>
       <Card>
@@ -145,9 +145,9 @@ const Cart = () => {
           </div>
         ))}
       </div>
-      <Box  style={{background:"white"}}>
-        <Typography style={{ display:"flex", justifyContent:"flex-end", paddingRight:"5px",fontSize: "25px",fontWeight:"bold" }}>
-            Total Amount: {`${Math.round(cart.reduce((sum, current) => sum + current.price  * current.count, 0) * 100) / 100} €`}
+      <Box sx={{ bgcolor: "background.default"}}>
+        <Typography sx={{ display: "flex", justifyContent: "flex-end", paddingRight: "5px", fontSize: "25px", fontWeight: "bold", color: "white" }}>
+          Total Amount: {`${Math.round(cart.reduce((sum, current) => sum + current.price * current.count, 0) * 100) / 100} €`}
         </Typography>
       </Box>
     </Box>

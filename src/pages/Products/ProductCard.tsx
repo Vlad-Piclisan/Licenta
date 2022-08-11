@@ -11,7 +11,7 @@ import { Product } from "./Products";
 
 const ProductCard = ({ product, onProductClicked }: { product: Product,onProductClicked?:() => void }) => {
   return (
-    <Card sx={{ maxWidth: 345, bgcolor: "background.default", cursor:"pointer"}} onClick={onProductClicked}>
+    <Card sx={{ maxWidth: 345, bgcolor: "background.product", cursor:"pointer"}} onClick={onProductClicked}>
       <CardMedia
         sx={{ margin: "auto" }}
         component="img"
