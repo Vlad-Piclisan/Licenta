@@ -14,6 +14,7 @@ import Configurator from "./pages/Configurator/Configurator";
 import Cart from "./components/Cart";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Account from "./pages/Account/Account";
+import Checkout from "./components/Checkout";
 
 function NotFound() {
   return (
@@ -94,6 +95,17 @@ function App() {
           <ApplicationLayout>
             <AuthGuard>
               <Account />
+            </AuthGuard>
+
+          </ApplicationLayout>
+        }
+      />
+      <Route
+        path="/Checkout"
+        element={
+          <ApplicationLayout>
+            <AuthGuard>
+              <Checkout></Checkout>
             </AuthGuard>
 
           </ApplicationLayout>

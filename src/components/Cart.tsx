@@ -1,12 +1,12 @@
 import { useContext } from "react";
 
-import { Box, Card, CardContent, IconButton, Paper, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, IconButton, Paper, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "@mui/styled-engine";
 import { CartContext, CartProduct } from "../hooks/useCart";
-
+import { Link, useNavigate } from "react-router-dom";
 export const CustomCardContent = styled(CardContent)(({ theme }) => ({
   padding: 0,
   paddingBottom: "0 !important",
@@ -15,8 +15,10 @@ export const CustomCardContent = styled(CardContent)(({ theme }) => ({
   // }
 }));
 
+
 function CartProductDisplay({ product }: { product: CartProduct }) {
   const { cart, deleteFromCart, remove, addToCart } = useContext(CartContext);
+
   return (
     <div style={{ width: "100%", cursor: "pointer", userSelect: "none" }}>
       <Card>
@@ -136,6 +138,10 @@ function CartProductDisplay({ product }: { product: CartProduct }) {
 
 const Cart = () => {
   const { cart } = useContext(CartContext);
+  const navigate = useNavigate();
+  const checkoutHandle = () => {
+    navigate("/Checkout");
+  }
   return (
     <Box>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -145,11 +151,16 @@ const Cart = () => {
           </div>
         ))}
       </div>
-      <Box sx={{ bgcolor: "background.default"}}>
-        <Typography sx={{ display: "flex", justifyContent: "flex-end", paddingRight: "5px", fontSize: "25px", fontWeight: "bold", color: "white" }}>
-          Total Amount: {`${Math.round(cart.reduce((sum, current) => sum + current.price * current.count, 0) * 100) / 100} €`}
-        </Typography>
-      </Box>
+      {cart.length != 0 ?
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end", bgcolor: "background.default", padding: 2, margin: "20px", borderRadius:2 }}>
+          <Typography sx={{ display: "flex", justifyContent: "flex-end", paddingRight: "5px", fontSize: "25px", fontWeight: "bold", color: "black" }}>
+            Total Amount: {`${Math.round(cart.reduce((sum, current) => sum + current.price * current.count, 0) * 100) / 100} €`}
+          </Typography>
+          <Button variant="contained" onClick={checkoutHandle} sx={{ mr: 2 }}>Proceed to Checkout</Button>
+        </Box>
+        :
+        <Box sx={{display: "flex",  justifyContent: "center", bgcolor: "background.default", padding: 2, margin: "20px", borderRadius:2}}><Typography>Cart is empty</Typography></Box>}
+
     </Box>
   );
 };
