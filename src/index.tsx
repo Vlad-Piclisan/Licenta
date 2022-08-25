@@ -8,6 +8,9 @@ import { AuthContextProvider } from "./hooks/useAuth";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
 import { CartContextProvider } from "./hooks/useCart";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ConfigsContextProvider } from "./hooks/useConfig";
+
 const firebaseConfig = {
   apiKey: "AIzaSyC8VCLKJ6zDh3zVzK-UJuOPrnbLWMXrUgw",
   authDomain: "licenta-30277.firebaseapp.com",
@@ -16,18 +19,22 @@ const firebaseConfig = {
   messagingSenderId: "674750166386",
   appId: "1:674750166386:web:96d6a033328c3cdacf19eb",
 };
-
+const queryClient = new QueryClient()
 const app = initializeApp(firebaseConfig);
 
 ReactDOM.render(
-  <BrowserRouter>
-  <ThemeProvider theme={theme}>
-    <AuthContextProvider>
-      <CartContextProvider>
-        <App />
-      </CartContextProvider>
-    </AuthContextProvider>
-  </ThemeProvider>
-  </BrowserRouter>,
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <AuthContextProvider>
+          <CartContextProvider>
+            <ConfigsContextProvider>
+              <App />
+            </ConfigsContextProvider>
+          </CartContextProvider>
+        </AuthContextProvider>
+      </ThemeProvider>
+    </BrowserRouter>
+  </QueryClientProvider>,
   document.getElementById("root")
 );

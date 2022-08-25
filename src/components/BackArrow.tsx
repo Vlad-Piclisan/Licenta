@@ -1,14 +1,17 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { IconButton } from "@mui/material";
 const BackArrow=()=>{
+  const navigate = useNavigate();
 
-    return(
-        <Link to="/" style={{ textDecoration: "none", color: "inherit", marginTop: 20 }}>
+  return(
+    <IconButton onClick={() =>  navigate(-1)}>
         <ArrowBackIcon>
 
         </ArrowBackIcon>
-      </Link>
+    </IconButton>
     )
+
 }
 
 export default BackArrow;

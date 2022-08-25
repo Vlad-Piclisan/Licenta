@@ -1,3 +1,4 @@
+import { getDocs, getFirestore,collection} from "firebase/firestore";
 import { CartProduct } from "../hooks/useCart";
 
 export interface Orders {
@@ -8,5 +9,7 @@ export interface Orders {
         cardNumber: string,
         expDate: string,
         cvv: string,
-    }
+    },
+    userID: string,
 }
+

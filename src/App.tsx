@@ -15,6 +15,7 @@ import Cart from "./components/Cart";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Account from "./pages/Account/Account";
 import Checkout from "./components/Checkout";
+import Configurations from "./pages/Configurator/Configurations";
 
 function NotFound() {
   return (
@@ -42,6 +43,7 @@ function App() {
     );
   }
   return (
+
     <Routes>
       <Route
         path="/"
@@ -74,6 +76,17 @@ function App() {
         element={
           <ApplicationLayout>
             <Cart />
+          </ApplicationLayout>
+        }
+      />
+      <Route
+        path="/Configurations"
+        element={
+          <ApplicationLayout>
+            <AuthGuard>
+              <Configurations />
+            </AuthGuard>
+
           </ApplicationLayout>
         }
       />

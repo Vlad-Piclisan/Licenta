@@ -6,10 +6,10 @@ import { CartContext } from "../hooks/useCart";
 import { saveOrder } from "../services/orders";
 const Checkout = () => {
 
-    const { cart } = useContext(CartContext);
+    const { cart, emptyCart } = useContext(CartContext);
 
     const { user, userInfo } = useContext(AuthContext);
-    const [value, setValue] = useState('1');
+    const [value, setValue] = useState(userInfo?.address ? '1' : '2');
     const { register, handleSubmit } = useForm();
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const index = (event.target as HTMLInputElement).value;
@@ -17,24 +17,27 @@ const Checkout = () => {
 
     };
 
-    async function agregateData(data:any){
+    async function agregateData(data: any) {
         const address = value === '1' ? userInfo?.address : data.address
         const cardInformation = {
-            cardName:data.cardName,
-            cardNumber:data.cardNumber,
-            expDate:data.expDate,
-            cvv:data.cvv,
+            cardName: data.cardName,
+            cardNumber: data.cardNumber,
+            expDate: data.expDate,
+            cvv: data.cvv,
         }
+        const userID = user?.uid!
         const payload = {
-            products:cart,
+            products: cart,
             address,
-            cardInformation
+            cardInformation,
+            userID
         }
-        
+
         await saveOrder(payload);
 
         alert("Order Placed")
-        
+        emptyCart();
+
     }
     return (
         <Box sx={{
@@ -61,7 +64,7 @@ const Checkout = () => {
                 </Typography>
                 <RadioGroup aria-label="address-select" value={value} onChange={handleRadioChange} >
 
-                    <FormControlLabel value={"1"} control={<Radio color="primary" />} label={<Typography>{userInfo?.address}</Typography>} />
+                    {userInfo?.address && <FormControlLabel value={"1"} control={<Radio color="primary" />} label={<Typography>{userInfo?.address}</Typography>} />}
                     <FormControlLabel value={"2"} control={<Radio color="primary" />} label={<Typography>Use a different address</Typography>} />
                     {value === "2" && <Box><TextField label={"Add your address"} {...register("address")}></TextField></Box>}
 
@@ -116,7 +119,7 @@ const Checkout = () => {
                         />
                     </Grid>
                 </Grid>
-                <Button type="submit" sx={{mt:4}}variant="contained">Order</Button>
+                <Button type="submit" sx={{ mt: 4 }} variant="contained">Order</Button>
             </FormControl>
 
         </Box>

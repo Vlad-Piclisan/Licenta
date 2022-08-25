@@ -18,7 +18,7 @@ import { CartContext } from "../hooks/useCart";
 import { Badge } from "@mui/material";
 
 const pages = ["Products", "Configurator"];
-const settings = ["Cart", "Account", "Logout"];
+const settings = ["Cart","Configurations", "Account", "Logout"];
 
 const NavBar = () => {
   const { user, userInfo } = React.useContext(AuthContext);
@@ -64,6 +64,9 @@ const NavBar = () => {
       case "Account":
         navigate("/Account");
         break;
+        case "Configurations":
+        navigate("/Configurations");
+        break;
       default:
         break;
     }
@@ -95,7 +98,7 @@ const NavBar = () => {
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
           >
             <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-              MECHE BIKES
+              ViTM Bikes
             </Link>
           </Typography>
 

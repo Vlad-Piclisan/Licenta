@@ -23,3 +23,5 @@ export async function updateUser(uid:string,payload:Partial<UserInfo>){
   return setDoc(doc(db, `users/${uid}`), payload, { merge:true });
 }
 
+
+

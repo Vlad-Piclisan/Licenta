@@ -24,7 +24,7 @@ const StartingPage = () => {
       }}
     >
       <Typography my={4} variant="h2" flexGrow={0.4} fontWeight={"bold"}>
-        Welcome to Meche Bikes{userInfo ? `, ${userInfo.firstName}` : ""}
+        Welcome to ViTM Bikes{userInfo ? `, ${userInfo.firstName}` : ""}
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "space-between", gap: 30 }}>
         <BigButton

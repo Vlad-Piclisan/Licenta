@@ -44,7 +44,6 @@ const SignUp = () => {
       console.log(userCredential);
       await saveUserToDatabase(userCredential.user.uid, payload);
       navigate("/");
-      alert("Bine " + userCredential.user.email);
     } catch (error: any) {
       console.log({ error });
       let errorMessage = "";
@@ -95,10 +94,10 @@ const SignUp = () => {
   return (
 
     <Container component="main" maxWidth="xs">
-     <BackArrow/>
+      <BackArrow />
       <CssBaseline />
       <Box
-      
+
         sx={{
           marginTop: 8,
           display: "flex",
@@ -106,7 +105,7 @@ const SignUp = () => {
           alignItems: "center",
         }}
       >
-        
+
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
@@ -228,7 +227,7 @@ const SignUp = () => {
           </Grid>
         </Box>
       </Box>
-      
+
 
 
 

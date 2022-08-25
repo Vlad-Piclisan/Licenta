@@ -1,4 +1,5 @@
 import { CartProduct } from "../hooks/useCart";
+import { Config } from "../services/configurations";
 
 export interface SignUpPayload  extends UserInfo{
     password: string;
@@ -11,4 +12,5 @@ export interface UserInfo {
     email: string;
     cart?: CartProduct[]
     address?: string;
+    configs?:Config[]
   }
