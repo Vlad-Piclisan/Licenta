@@ -11,61 +11,61 @@ const localStorageCartKey = "CONFIGURATOR";
 
 export function useConfig() {
 
-    const {user, userInfo} = useContext(AuthContext);
+  const { user, userInfo } = useContext(AuthContext);
 
-    const [configs, setConfigs] = useState<Config[]>(() => {
-        const configs = localStorage.getItem(localStorageCartKey);
-        if (configs) {
-            return JSON.parse(configs);
-        }
-        return []
-    });
+  const [configs, setConfigs] = useState<Config[]>(() => {
+    const configs = localStorage.getItem(localStorageCartKey);
+    if (configs) {
+      return JSON.parse(configs);
+    }
+    return []
+  });
 
 
-    // React.useEffect(() => {
-    //     // fetch configs from DB
+  // React.useEffect(() => {
+  //     // fetch configs from DB
 
-    //     getAllConfigs().then(setConfigs);
-    // },[]);
+  //     getAllConfigs().then(setConfigs);
+  // },[]);
 
-    React.useEffect(() => {
-        localStorage.setItem(localStorageCartKey, JSON.stringify(configs));
+  React.useEffect(() => {
+    localStorage.setItem(localStorageCartKey, JSON.stringify(configs));
 
-        // localStorage.setItem(localStorageCartKey, JSON.stringify(cart));
-        if (user) {
-            console.log("Updating");
-            updateUser(user.uid, {configs});
+    // localStorage.setItem(localStorageCartKey, JSON.stringify(cart));
+    if (user) {
+      console.log("Updating");
+      updateUser(user.uid, { configs });
 
-        }
-    },[configs]);
+    }
+  }, [configs]);
 
-    function emptyConfigs() {
-        setConfigs([]);
+  function emptyConfigs() {
+    setConfigs([]);
+  }
+
+  function addConfigs(configuration: Config) {
+    const currentConfig = configs.find(config => config.name === configuration.name);
+    if (!currentConfig) {
+      setConfigs([...configs, configuration]);
     }
 
-    function addConfigs(configuration:Config){
-        const currentConfig = configs.find(config => config.name === configuration.name);
-        if(!currentConfig){
-            setConfigs([...configs,configuration]);
-        }
-        
-    }
-    function deleteConfigs(configuration:Config){
-        setConfigs(configs.filter((el) => el.name !== configuration.name ))
-    }
+  }
+  function deleteConfigs(configuration: Config) {
+    setConfigs(configs.filter((el) => el.name !== configuration.name))
+  }
 
-    return {
-        configs,
-        emptyConfigs,
-        addConfigs,
-        deleteConfigs
-    }
+  return {
+    configs,
+    emptyConfigs,
+    addConfigs,
+    deleteConfigs
+  }
 
 }
 
-export const ConfigsContextProvider:React.FC = ({children}) => {
-    const configs = useConfig();
-    return <ConfigContext.Provider value={configs}>
-        {children}
-    </ConfigContext.Provider>
+export const ConfigsContextProvider: React.FC = ({ children }) => {
+  const configs = useConfig();
+  return <ConfigContext.Provider value={configs}>
+    {children}
+  </ConfigContext.Provider>
 }
