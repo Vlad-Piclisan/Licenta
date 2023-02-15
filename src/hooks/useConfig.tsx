@@ -22,11 +22,11 @@ export function useConfig() {
   });
 
 
-  // React.useEffect(() => {
-  //     // fetch configs from DB
+  React.useEffect(() => {
+    // fetch configs from DB
 
-  //     getAllConfigs().then(setConfigs);
-  // },[]);
+    getAllConfigs().then(setConfigs);
+  }, []);
 
   React.useEffect(() => {
     localStorage.setItem(localStorageCartKey, JSON.stringify(configs));

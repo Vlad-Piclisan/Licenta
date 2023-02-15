@@ -18,7 +18,7 @@ import { CartContext } from "../hooks/useCart";
 import { Badge } from "@mui/material";
 
 const pages = ["Products", "Configurator"];
-const settings = ["Cart","Configurations", "Account", "Logout"];
+const settings = ["Cart", "Configurations", "Account", "Logout"];
 
 const NavBar = () => {
   const { user, userInfo } = React.useContext(AuthContext);
@@ -64,7 +64,7 @@ const NavBar = () => {
       case "Account":
         navigate("/Account");
         break;
-        case "Configurations":
+      case "Configurations":
         navigate("/Configurations");
         break;
       default:
@@ -144,7 +144,7 @@ const NavBar = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
-            LOGO
+            ViTM Bikes
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
