@@ -16,6 +16,7 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Account from "./pages/Account/Account";
 import Checkout from "./components/Checkout";
 import Configurations from "./pages/Configurator/Configurations";
+import { CartGuard } from "./components/Guards/CartGuard";
 
 function NotFound() {
   return (
@@ -75,7 +76,9 @@ function App() {
         path="Cart"
         element={
           <ApplicationLayout>
-            <Cart />
+            <AuthGuard>
+              <Cart />
+            </AuthGuard>
           </ApplicationLayout>
         }
       />
@@ -94,14 +97,6 @@ function App() {
         path="Forgot-Password"
         element={<ForgotPassword />}
       />
-      {/* <Route
-        path="Main"
-        element={
-          <AuthGuard>
-            <Main />
-          </AuthGuard>
-        }
-      /> */}
       <Route
         path="/Account"
         element={
@@ -117,9 +112,11 @@ function App() {
         path="/Checkout"
         element={
           <ApplicationLayout>
-            <AuthGuard>
-              <Checkout></Checkout>
-            </AuthGuard>
+            <CartGuard>
+             <AuthGuard>
+             <Checkout></Checkout>
+             </AuthGuard>
+            </CartGuard>
 
           </ApplicationLayout>
         }

@@ -9,3 +9,5 @@ export const AuthGuard: FC = ({ children }) => {
     }
     return <>{children}</>;
   };
+
+  

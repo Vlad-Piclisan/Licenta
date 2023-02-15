@@ -55,42 +55,7 @@ const SignUp = () => {
       setError(errorMessage ?? error.message);
     }
   }
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-
-  //   const payload = {
-  //     email: data.get("email") as string,
-  //     confirmEmail: data.get("confirm-email") as string,
-  //     password: data.get("password") as string,
-  //     confirmPassword: data.get("confirm-password") as string,
-  //   };
-  //   console.log(payload.password)
-  //   console.log(payload.confirmPassword);
-  //   console.log(payload.confirmEmail);
-  //   if (!payload.email || !payload.password) {
-  //     return;
-  //   }
-
-  //   if(payload.confirmEmail!=payload.email || payload.confirmPassword!=payload.password ){
-  //     return;
-  //   }
-
-  //   const auth = getAuth();
-
-  //   try {
-  //     const userCredential = await createUserWithEmailAndPassword(
-  //       auth,
-  //       payload.email,
-  //       payload.password
-  //     );
-  //     navigate("/");
-  //     alert("Bine " + userCredential.user.email);
-  //   } catch (error: any) {
-  //     alert("Probelmius" + error.message);
-  //   }
-  // };
-  //todo: dupa ce merge signup-ul trimit pe pag princ +errors
+  
   return (
 
     <Container component="main" maxWidth="xs">
@@ -167,7 +132,7 @@ const SignUp = () => {
             fullWidth
             {...register("confirmEmail", {
               required: "Email confirmation is required ",
-              validate: (email) => email === watch("email"), //if not "Email is not matching"
+              validate: (email) => email === watch("email"), 
             })}
             error={!!errors.confirmEmail}
             helperText={errors.confirmEmail?.message}

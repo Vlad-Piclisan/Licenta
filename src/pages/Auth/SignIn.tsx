@@ -36,9 +36,9 @@ const SignIn = () => {
         payload.password
       );
       navigate("/");
-      // alert("Bine " + userCredential.user.email);
+
     } catch (error: any) {
-      alert("Probelmius" + error.message);
+      alert(error.message);
     }
   };
 

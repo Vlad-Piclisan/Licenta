@@ -27,12 +27,13 @@ import {
 import { createFileURL } from "../../services/FileService";
 import { listenForProducts, saveProduct } from "../../services/products";
 import ProductCard from "./ProductCard";
-
+import { AuthContext } from "../../hooks/useAuth";
 interface CategoryPayload {
   name: string;
 }
 
 const CategoryForm = () => {
+
   const {
     register,
     handleSubmit,
@@ -89,8 +90,8 @@ const CategoryForm = () => {
             id="name"
             label="Name"
             name="name"
-            // autoComplete="email"
-            // autoFocus
+          // autoComplete="email"
+          // autoFocus
           />
           <Button
             type="submit"
@@ -141,7 +142,6 @@ const ProductForm = () => {
     // getAllCategories().then(console.log)
     // getCategoryByName("Biciclete").then(console.log)
   }, []);
-  const [products, setProducts] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   async function onSubmit(payload: ProductPayload) {
     try {
@@ -191,8 +191,8 @@ const ProductForm = () => {
             id="name"
             label="Product Name"
             name="name"
-            // autoComplete="email"
-            // autoFocus
+          // autoComplete="email"
+          // autoFocus
           />
           <TextField
             margin="normal"
@@ -206,8 +206,8 @@ const ProductForm = () => {
             id="price"
             label="Product Price"
             name="price"
-            // autoComplete="email"
-            // autoFocus
+          // autoComplete="email"
+          // autoFocus
           />
           <TextField
             margin="normal"
@@ -219,8 +219,8 @@ const ProductForm = () => {
             id="description"
             label="Product Description"
             name="description"
-            // autoComplete="email"
-            // autoFocus
+          // autoComplete="email"
+          // autoFocus
           />
           <input
             // ref={register as any}
@@ -271,10 +271,11 @@ const ProductForm = () => {
 
 const Products = () => {
   const [open, setOpen] = React.useState(false);
+  const { userInfo } = useContext(AuthContext);
   const handleClickOpen = () => {
     setOpen(true);
   };
-  const { cart, addToCart,deleteFromCart } = useContext(CartContext);
+  const { cart, addToCart, deleteFromCart } = useContext(CartContext);
   console.log({ cart });
   const handleClose = () => {
     setOpen(false);
@@ -302,7 +303,7 @@ const Products = () => {
 
   return (
     <Box>
-      <Dialog
+      < Dialog
         fullWidth={true}
         maxWidth={"md"}
         open={open}
@@ -358,17 +359,17 @@ const Products = () => {
                   }}
                 >
                   <Typography>€{selectedProduct.price}</Typography>
-                  <AddToCartButton
+                  {!userInfo ? <div></div> : <AddToCartButton
                     variant="contained"
                     onClick={() => {
                       addToCart(selectedProduct);
                     }}
-                  />
-                  <Button onClick={() => {
-                    deleteFromCart(selectedProduct);
+                  />}
+                  {/* <Button onClick={() => {
+                    // deleteFromCart(selectedProduct);
                   }}>
                     Remove from cart
-                  </Button>
+                  </Button> */}
                 </Box>
               </Box>
             </Box>
@@ -392,13 +393,13 @@ const Products = () => {
           mt: 2,
         }}
       >
-        <Button
+        {userInfo?.isAdmin && <Button
           variant="contained"
-          sx={{ display: "flex" }}
+          sx={{ display: "flex", marginBottom: "1em" }}
           onClick={handleClickOpen}
         >
           Open Form
-        </Button>
+        </Button>}
       </Box>
       <Box px={16}>
         <Grid container spacing={6}>

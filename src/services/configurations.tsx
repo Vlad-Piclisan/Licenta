@@ -11,3 +11,4 @@ export async function getAllConfigs(): Promise<Config[]> {
     const configs = querySnapshot.docs.map(doc => doc.data())
     return configs as Config[];
 }
+
